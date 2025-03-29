@@ -9,10 +9,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class Booking {
+public class TestBooking {
 
     private static final String BASE_URL = "https://restful-booker.herokuapp.com/booking";
 
@@ -57,11 +59,12 @@ public class Booking {
     @Test
     public void testGetBookingId() {
         String id = "1";
-        Response response = RestAssured.given()
+        RestAssured.given()
                 .when()
-                .get(BASE_URL + "/" + id);
-        assertEquals(200, response.statusCode());
-        assertNotNull(response);
+                .get(BASE_URL + "/" + id)
+                .then()
+                .statusCode(200)
+                .body(not(emptyString()));
     }
     @Test
     public void testCreateBooking() {
